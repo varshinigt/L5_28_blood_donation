@@ -1,6 +1,4 @@
-************* Module blood_donation
-blood_donation.py:107:0: C0304: Final newline missing (missing-final-newline)
 
-------------------------------------------------------------------
-Your code has been rated at 9.84/10 (previous run: 9.83/10, +0.01)
+-------------------------------------------------------------------
+Your code has been rated at 10.00/10 (previous run: 9.84/10, +0.16)
 
