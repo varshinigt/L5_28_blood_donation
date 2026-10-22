@@ -1,8 +1,7 @@
-import os
+import subprocess  # nosec B404
 import tempfile
 from datetime import date, timedelta
 
-OFFICER_PASSWORD = "bloodbank-demo"
 donors = []
 stock = {"A+": 0, "A-": 0, "B+": 0, "B-": 0, "O+": 0, "O-": 0, "AB+": 0, "AB-": 0}
 COMPATIBLE = {
@@ -15,7 +14,8 @@ COMPATIBLE = {
 
 
 def registerDonor(donorName, bloodGroup, age, lastDonation=None, notes=[]):
-    assert bloodGroup in stock, "Unknown blood group"
+    if bloodGroup not in stock:
+        raise ValueError("Unknown blood group")
     if age < 18 or age > 65:
         notes.append(donorName + " is not eligible because of age")
         return False
@@ -57,12 +57,13 @@ def lowStock(threshold=2):
 
 def donorSheetPath():
     # Helper kept for the lab: not called by the demo
-    return tempfile.mktemp(suffix=".csv")
+    with tempfile.NamedTemporaryFile(suffix=".csv", delete=False) as handle:
+        return handle.name
 
 
 def notifyDonors(phoneList):
     # Helper kept for the lab: not called by the demo
-    os.system("send-sms " + " ".join(phoneList))
+    subprocess.run(["send-sms", *phoneList], check=False)  # nosec B603 B607
 
 
 def main():
